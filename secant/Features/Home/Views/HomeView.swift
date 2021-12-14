@@ -28,13 +28,6 @@ struct HomeView: View {
                 .primaryButtonStyle
                 .frame(height: 50)
 
-                Button(
-                    action: { viewStore.send(.updateRoute(.onboarding)) },
-                    label: { Text("Show Onboarding") }
-                )
-                .primaryButtonStyle
-                .frame(height: 50)
-
                 Spacer()
 
                 HStack {
@@ -66,18 +59,6 @@ struct HomeView: View {
                                 whenDone: { viewStore.send(.updateRoute(nil)) }
                             )
                             .debug(),
-                            environment: ()
-                        )
-                    )
-                }
-            )
-            .navigationLinkEmpty(
-                isActive: viewStore.showOnboardingBinding,
-                destination: {
-                    OnboardingScreen(
-                        store: Store(
-                            initialState: OnboardingState(),
-                            reducer: .default,
                             environment: ()
                         )
                     )
