@@ -25,7 +25,7 @@ struct TransactionHistoryView: View {
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TransactionHistoryView(store: .demo)
+            TransactionHistoryView(store: .placeholder)
                 .navigationBarTitleDisplayMode(.inline)
         }
 
@@ -35,46 +35,3 @@ struct TransactionView_Previews: PreviewProvider {
         }
     }
 }
-
-#if DEBUG
-extension TransactionHistoryStore {
-    static var demo: Store<TransactionHistoryState, TransactionHistoryAction> {
-        return Store(
-            initialState: TransactionHistoryState(
-                transactions: .demo,
-                route: nil
-            ),
-            reducer: .default,
-            environment: ()
-        )
-    }
-
-    static var demoWithSelectedTransaction: Store<TransactionHistoryState, TransactionHistoryAction> {
-        let transactions = IdentifiedArrayOf<Transaction>.demo
-        return Store(
-            initialState: TransactionHistoryState(
-                transactions: transactions,
-                route: .showTransaction(transactions[3])
-            ),
-            reducer: .default.debug(),
-            environment: ()
-        )
-    }
-}
-
-extension IdentifiedArrayOf where Element == Transaction {
-    static var demo: IdentifiedArrayOf<Transaction> {
-        return .init(
-            uniqueElements: (0..<10).map {
-                Transaction(
-                    id: $0,
-                    amount: 25,
-                    memo: "defaultMemo",
-                    toAddress: "ToAddress",
-                    fromAddress: "FromAddress"
-                )
-            }
-        )
-    }
-}
-#endif

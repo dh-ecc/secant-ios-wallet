@@ -59,7 +59,7 @@ struct HomeView: View {
                     SendView(
                         store: .init(
                             initialState: .init(
-                                transaction: .demo,
+                                transaction: .placeholder,
                                 route: nil
                             ),
                             reducer: SendReducer.default(
@@ -104,13 +104,10 @@ struct HomeView: View {
 
 #if DEBUG
 extension HomeStore {
-    static var demo: HomeStore {
+    static var placeholder: HomeStore {
         HomeStore(
             initialState: HomeState(
-                transactionHistoryState: .init(
-                    transactions: .demo,
-                    route: nil
-                ),
+                transactionHistoryState: .placeHolder,
                 route: nil
             ),
             reducer: .default.debug(),
@@ -123,7 +120,7 @@ extension HomeStore {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(store: .demo)
+            HomeView(store: .placeholder)
         }
     }
 }

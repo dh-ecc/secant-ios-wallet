@@ -12,21 +12,7 @@ struct TransactionDetailView: View {
 struct TransactionDetail_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TransactionDetailView(transaction: .demo)
+            TransactionDetailView(transaction: .placeholder)
         }
     }
 }
-
-#if DEBUG
-extension Transaction {
-    static var demo: Self {
-        .init(
-            id: 2,
-            amount: 123,
-            memo: "defaultMemo",
-            toAddress: "ToAddress",
-            fromAddress: "FromAddress"
-        )
-    }
-}
-#endif
