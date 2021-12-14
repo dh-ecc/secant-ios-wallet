@@ -5,16 +5,19 @@ struct HomeState: Equatable {
     enum Route: Equatable, CaseIterable {
         case history
         case send
+        case profile
         case scan
         case request
     }
     var transactionHistoryState: TransactionHistoryState
+    var profileState: ProfileState
     var route: Route?
 }
 
 enum HomeAction: Equatable {
     case updateRoute(HomeState.Route?)
     case transactionHistory(TransactionHistoryAction)
+    case profile(ProfileAction)
 }
 
 // MARK: - HomeReducer
@@ -32,6 +35,16 @@ extension HomeReducer {
                 .default
                 .run(&state.transactionHistoryState, transactionHistoryAction, ())
                 .map(HomeAction.transactionHistory)
+        case let .profile(profileAction):
+            return ProfileReducer
+                .default
+                .pullback(
+                    state: \.profileState,
+                    action: /HomeAction.profile,
+                    environment: { _ in
+                        return ProfileEnvironment()
+                    })
+                .run(&state, action, ())
         }
     }
 }
@@ -47,6 +60,14 @@ extension HomeStore {
             action: HomeAction.transactionHistory
         )
     }
+
+    func profileStore() -> ProfileStore {
+        self.scope(
+            state: \.profileState,
+            action: HomeAction.profile
+        )
+    }
+
 }
 
 // MARK: - HomeViewStore
@@ -109,6 +130,15 @@ extension HomeViewStore {
             }
         )
     }
+
+    var showProfileBinding: Binding<Bool> {
+        self.binding(
+            get: { $0.route == .profile },
+            send: { isActive in
+                return .updateRoute(isActive ? .profile : nil)
+            }
+        )
+    }
 }
 
 // MARK: PlaceHolders
@@ -117,6 +147,7 @@ extension HomeState {
     static var placeholder: Self {
         .init(
             transactionHistoryState: .placeHolder,
+            profileState: .placeholder,
             route: nil
         )
     }

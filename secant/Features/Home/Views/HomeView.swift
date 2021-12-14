@@ -33,6 +33,8 @@ struct HomeView: View {
             ScanView()
         case .request:
             RequestView()
+        case .profile:
+            ProfileView(store: store.profileStore())
         }
     }
 
@@ -99,6 +101,7 @@ extension HomeStore {
         HomeStore(
             initialState: HomeState(
                 transactionHistoryState: .placeHolder,
+                profileState: .placeholder,
                 route: nil
             ),
             reducer: .default.debug(),
