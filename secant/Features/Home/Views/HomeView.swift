@@ -67,6 +67,11 @@ struct HomeView: View {
                             action: { viewStore.toggleSelectedTransaction() },
                             label: { Text("Toggle Selected Transaction") }
                         )
+
+                        Button(
+                            action: { viewStore.send(.reset) },
+                            label: { Text("Reset (to startup)") }
+                        )
                     }
                 }
             }
