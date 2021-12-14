@@ -5,6 +5,7 @@ struct HomeState: Equatable {
     enum Route: Equatable, CaseIterable {
         case history
         case send
+        case scan
     }
     var transactionHistoryState: TransactionHistoryState
     var route: Route?
