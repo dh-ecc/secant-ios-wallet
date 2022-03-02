@@ -31,8 +31,11 @@ struct PreambleView: View  {
 struct RecoveryPhraseBackupValidationView: View {
     let store: RecoveryPhraseValidationStore
 
+    var viewStore: RecoveryPhraseValidationViewStore {
+        ViewStore(store)
+    }
+
     var body: some View {
-        WithViewStore(store) { viewStore in
             VStack(alignment: .center) {
                 header(for: viewStore)
                     .padding(.horizontal)
@@ -86,7 +89,6 @@ struct RecoveryPhraseBackupValidationView: View {
             .scrollableWhenScaledUp()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text("recoveryPhraseBackupValidation.title"))
-        }
     }
 
     @ViewBuilder func header(for viewStore: RecoveryPhraseValidationViewStore) -> some View {
