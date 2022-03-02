@@ -8,15 +8,39 @@
 import SwiftUI
 import ComposableArchitecture
 
+struct PreambleView: View  {
+    var store: RecoveryPhraseValidationStore
+
+    var body: some View {
+        WithViewStore(store) { viewStore in
+            Button("goto validate") {
+                viewStore.send(.updateRoute(.validate))
+            }
+            .navigationLinkEmpty(
+                isActive: viewStore.bindingForValidation,
+                destination: {
+                    RecoveryPhraseBackupValidationView(
+                        store: store
+                    )
+                }
+            )
+        }
+    }
+}
+
 struct RecoveryPhraseBackupValidationView: View {
     let store: RecoveryPhraseValidationStore
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store) { viewStore in
             VStack(alignment: .center) {
                 header(for: viewStore)
                     .padding(.horizontal)
                     .padding(.bottom, 10)
+
+                Button("success") {
+                    viewStore.send(.updateRoute(.success))
+                }
 
                 ZStack {
                     Asset.Colors.BackgroundColors.phraseGridDarkGray.color
@@ -48,7 +72,7 @@ struct RecoveryPhraseBackupValidationView: View {
                     .padding()
                     .padding(.top, 0)
                     .navigationLinkEmpty(
-                        isActive: viewStore.bindingForRoute(.success),
+                        isActive: viewStore.bindingForSuccess,
                         destination: { ValidationSucceededView(store: store) }
                     )
                     .navigationLinkEmpty(

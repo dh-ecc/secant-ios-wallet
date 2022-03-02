@@ -21,6 +21,7 @@ struct ValidationWord: Equatable {
 
 struct RecoveryPhraseValidationState: Equatable {
     enum Route: Equatable, CaseIterable {
+        case validate // show validationScreen
         case success
         case failure
     }
@@ -50,6 +51,24 @@ extension RecoveryPhraseValidationViewStore {
             get: { $0.route == route },
             send: { isActive in
                 return .updateRoute(isActive ? route : nil)
+            }
+        )
+    }
+
+    var bindingForValidation: Binding<Bool> {
+        self.binding(
+            get: { $0.route != nil },
+            send: { isActive in
+                return .updateRoute(isActive ? .validate : nil)
+            }
+        )
+    }
+
+    var bindingForSuccess: Binding<Bool> {
+        self.binding(
+            get: { $0.route == .success },
+            send: { isActive in
+                return .updateRoute(isActive ? .success : .validate)
             }
         )
     }
